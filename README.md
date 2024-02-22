@@ -5,7 +5,7 @@ The Simple Portal 2 Package Loading Instrument for Convenient External modding, 
 To keep things lightweight, this project uses [NeutralinoJS](https://neutralino.js.org) for the web-based UI and for the API that manages Steam, Portal 2 and all of the packages. In short, Neutralino is similar to Electron. But instead of bundling a whole browser, it relies on what's already present on the user's system.
 
 ### Custom directories
-This version of Spplice has the ability to use custom Portal 2 installations. **We do not support piracy**. This version is intended to be used for educational purposes only.
+This version of Spplice has the ability to use custom Portal 2 installations. 
 
 ### Contributing
 To contribute, all you need is Git, Neutralino, Steam, Portal 2, and a general understanding of what Spplice is about.
