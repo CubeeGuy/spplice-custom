@@ -1,28 +1,8 @@
 // Simple Portal 2 Package Loading Instrument for Convenient External modding
 
 var game = {}
+var gamePath;
 Neutralino.init();
-
-async function getGameDirectory() {
-  try {
-
-    return dirVal;
-
-  } catch (e) {
-    
-    if (typeof e === "object") e = JSON.stringify(e);
-    Neutralino.os.showMessageBox(
-      "Failed to find Portal 2",
-      "What the fuck is going on",
-      "OK",
-      "ERROR"
-    );
-
-  }
-
-  return false;
-
-}
 
 async function killGame() {
 
@@ -196,7 +176,7 @@ async function launchMod(packageID) {
   clearInterval(gameCloseInterval);
 
   setStatusText("Looking for Portal 2...");
-  const gamePath = await getGameDirectory();
+  gamePath = await document.getElementById("dir-input").value;
 
   if (!gamePath) {
     setStatusText("Invalid directory", true);
@@ -224,7 +204,7 @@ async function launchMod(packageID) {
   setStatusText("Starting Portal 2...");
 
   if (NL_OS === "Windows") {
-    Neutralino.os.execCommand(`${PWSH} Start-Process '${gamePath}${S}SmartSteamLoader.exe' '-applaunch 620 -tempcontent +host_writeconfig spplicetmp' -Verb runAs`, { background: true });
+    Neutralino.os.execCommand(`${PWSH} Start-Process '${gamePath}${S}portal2.exe' '-applaunch 620 -tempcontent +host_writeconfig spplicetmp' -Verb runAs`, { background: true });
   } else {
     setStatusText("You should be playing on Windows only")
   }
