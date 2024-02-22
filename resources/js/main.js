@@ -14,6 +14,9 @@ const ARGS = {
   online: true,
   queuedMod: null
 }
+var dirVal;
+
+Neutralino.window.setDraggableRegion("draggable")
 
 async function autoUpdate() {
 
@@ -118,6 +121,8 @@ function mergeToggle() {
   }
 
 }
+
+const exitButton = document.getElementById("spplice-close");
 
 var index = { packages: [] }, activePackage = -1;
 async function loadCards() {
@@ -371,6 +376,13 @@ function updateSearch() {
 
 }
 
+async function dirUpdate() {
+    document.getElementById("dir-input").value = await Neutralino.os.showFolderDialog('Select Portal 2 directory', {
+        defaultPath: 'C:/Program Files (x86)/Steam/steamapps/common'
+    });
+  }
+  
+
 async function importCustom() {
 
   const filter = {
@@ -532,4 +544,8 @@ function spplice2PopupClose () {
   div.style.setProperty("-webkit-backdrop-filter", "blur(0px)");
   div.style.pointerEvents = "none";
 
+}
+
+function sppliceExit() {
+    Neutralino.events.dispatch("windowClose");
 }

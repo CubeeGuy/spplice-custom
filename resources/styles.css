@@ -271,6 +271,56 @@ i {
   color: white;
 }
 
+#dir-input {
+  position: absolute;
+  left: 6vh;
+  top: 0;
+  width: calc(100% - 7vh);
+  height: 100%;
+  padding: 0;
+  margin: 0;
+  background: 0;
+  border: 0;
+  right: -5;
+
+  user-select: all;
+  -ms-user-select: all;
+  -moz-user-select: all;
+  -webkit-user-select: all;
+
+  color: white;
+  }
+
+  #dir-icon {
+    position: absolute;
+    top: 0.5vh;
+    left: 0.75vh;
+    width: 4vh;
+    height: 4vh;
+  }
+
+  .dir-open {
+    color: rgb(23, 192, 233);
+    background: rgb(7, 139, 231);
+    background: -moz-linear-gradient(135deg, rgba(7, 139, 231, 1) 0%, rgba(53, 200, 236, 1) 100%);
+    background: -webkit-linear-gradient(135deg, rgba(7, 139, 231, 1) 0%, rgba(53, 200, 236, 1) 100%);
+    background: linear-gradient(135deg, rgba(7, 139, 231, 1) 0%, rgba(53, 200, 236, 1) 100%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    position: absolute;
+    text-align: center;
+    bottom: 3.5px;
+    right: 5px;
+    height: 1;
+    width: 1;
+    z-index: 5;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
 #merge-container {
   display: block;
   text-align: center;
@@ -308,6 +358,30 @@ i {
 .merge-checked #merge-title {
   color: #faa81a;
 }
+
+#window-buttons {
+    position: fixed;
+    top: 5px;
+    right: 10px;
+    font-size: 2rem;
+    transition: color 0.2s;
+    color: white;
+}
+#window-button {
+    position: relative;
+    z-index: 1;
+    cursor: pointer;
+}
+
+::-webkit-scrollbar {display:none;}
+
+#draggable {
+    position: fixed;
+    min-width: 961px;
+    min-height: 50px;
+    left: 0;
+    top: 0;
+  }
 
 .gradient-text {
   color: rgb(23, 192, 233);
@@ -354,3 +428,4 @@ i {
   font-size: 1.2rem;
   cursor: pointer;
 }
+  

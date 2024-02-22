@@ -1,35 +1,19 @@
 // Simple Portal 2 Package Loading Instrument for Convenient External modding
 
-var game = {}, steam = {};
+var game = {}
 Neutralino.init();
 
-async function getGameDirectory(steamPath) {
-
+async function getGameDirectory() {
   try {
 
-    const dirs = (await Neutralino.filesystem.readFile(`${steamPath}/steamapps/libraryfolders.vdf`)).split('"path"');
-
-    for (let i = 1; i < dirs.length; i++) {
-      if (dirs[i].split('"apps"')[1].indexOf('"620"') !== -1) {
-
-        return dirs[i].split('"') // Isolate properties
-          .slice(1) // Jump to start of path 
-          .join('"') // Rebuild string in case path has quotes
-          .split("\n")[0] // Include only this line
-          .slice(0, -1) // Remove last quote
-          .replace(/\\\\/g, "\\") // Fix double backslashes on Windows
-          .replace(/\\"/g, '"') // Fix escaped quotes in path
-          + `${S}steamapps${S}common${S}Portal 2`; // Add Portal 2 directory
-
-      }
-    }
+    return dirVal;
 
   } catch (e) {
     
     if (typeof e === "object") e = JSON.stringify(e);
     Neutralino.os.showMessageBox(
       "Failed to find Portal 2",
-      "An error occured while parsing Steam library data: " + e,
+      "What the fuck is going on",
       "OK",
       "ERROR"
     );
@@ -47,54 +31,6 @@ async function killGame() {
     case "Linux"  : await Neutralino.os.execCommand('pkill -9 "portal2_linux"');
     case "Darwin" : await Neutralino.os.execCommand('pkill -9 "portal2_osx"');
   }
-
-}
-
-async function getSteamDirectory() {
-
-  try {
-
-    if (NL_OS === "Windows") {
-  
-      const reg = (await Neutralino.os.execCommand(`${REG} query HKCU\\SOFTWARE\\Valve\\Steam /v SteamPath`)).stdOut;
-      return reg.split("REG_SZ    ").slice(1).join("REG_SZ    ").split("\r\n")[0].replace(/\//g, "\\");
-  
-    } else  {
-
-      const home = (await Neutralino.os.execCommand("echo $HOME")).stdOut.split("\n")[0];
-      
-      const paths = [
-        "/.steam/steam",
-        "/.local/share/Steam",
-        "/Library/Application Support/Steam",
-        "/.var/app/com.valvesoftware.Steam/.local/share/Steam/steamapps"
-      ];
-      
-      for (let i = 0; i < paths.length; i ++) {
-        
-        try {
-          const curr = home + paths[i];
-          await Neutralino.filesystem.readDirectory(curr);
-          return curr;
-        } catch (e) {}
-
-      }
-
-    }
-
-  } catch (e) {
-
-    if (typeof e === "object") e = JSON.stringify(e);
-    Neutralino.os.showMessageBox(
-      "Failed to find Steam",
-      "An error occured while looking for the Steam installation: " + e,
-      "OK",
-      "ERROR"
-    );
-
-  }
-
-  return false;
 
 }
 
@@ -259,22 +195,11 @@ async function launchMod(packageID) {
   clearInterval(gameStartInterval);
   clearInterval(gameCloseInterval);
 
-  setStatusText("Looking for Steam...");
-  const steamPath = await getSteamDirectory();
-
-  if (!steamPath) {
-
-    setStatusText("Steam is not installed", true);
-    return;
-
-  }
-
   setStatusText("Looking for Portal 2...");
-  const gamePath = await getGameDirectory(steamPath);
+  const gamePath = await getGameDirectory();
 
   if (!gamePath) {
-
-    setStatusText("Portal 2 is not installed, try restarting Steam", true);
+    setStatusText("Invalid directory", true);
     return;
 
   }
@@ -282,8 +207,6 @@ async function launchMod(packageID) {
   setStatusText("Cleaning up...");
 
   try { await Neutralino.filesystem.removeFile(`${gamePath}/portal2/cfg/spplicetmp.cfg`) } catch (e) { }
-  try { await Neutralino.filesystem.removeFile(`${steamPath}/GameOverlayRenderer.log`) } catch (e) { }
-  try { await Neutralino.filesystem.removeFile(`${NL_PATH}/steam.log`) } catch (e) { }
   try { await killGame() } catch (e) { }
 
   if (mergeMode) setStatusText("Installing packages...");
@@ -301,9 +224,9 @@ async function launchMod(packageID) {
   setStatusText("Starting Portal 2...");
 
   if (NL_OS === "Windows") {
-    Neutralino.os.execCommand(`${PWSH} Start-Process '${steamPath}${S}steam.exe' '-applaunch 620 -tempcontent +host_writeconfig spplicetmp' -Verb runAs`, { background: true });
+    Neutralino.os.execCommand(`${PWSH} Start-Process '${gamePath}${S}SmartSteamLoader.exe' '-applaunch 620 -tempcontent +host_writeconfig spplicetmp' -Verb runAs`, { background: true });
   } else {
-    Neutralino.os.execCommand(`steam -applaunch 620 -tempcontent +host_writeconfig spplicetmp > ${NL_PATH}/steam.log`, { background: true });
+    setStatusText("You should be playing on Windows only")
   }
 
   mergeMode = true;
@@ -326,19 +249,14 @@ async function launchMod(packageID) {
       gameCloseInterval = setInterval(async function () {
         
         if (NL_OS === "Windows") {
-
-          const log = await Neutralino.filesystem.readFile(`${steamPath}/GameOverlayRenderer.log`);
           if (log.split("GameID = 620").slice(-1)[0].indexOf("Detaching input hook...") === -1) return;
           
         } else {
-          
-          const log = await Neutralino.filesystem.readFile(`${NL_PATH}/steam.log`);
           if (log.indexOf('Game.dll loaded for "Half-Life 2"') === -1) return;
           
         }
 
         clearInterval(gameCloseInterval);
-        Neutralino.filesystem.removeFile(`${NL_PATH}/steam.log`);
 
         setStatusText("Portal 2 closed", true);
         setActivePackage(-1);
@@ -382,5 +300,4 @@ async function shutdownSpplice() {
 Neutralino.events.on("windowClose", function() {
 
   shutdownSpplice();
-
 });

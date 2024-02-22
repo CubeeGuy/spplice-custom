@@ -6,13 +6,25 @@
     <link rel="stylesheet" href="styles.css">
     <link rel="icon" type="image/png" href="icon.png">
   </head>
-  <body onload="loadCards()">
+  <body onload="loadCards()" >
+
+    <div id="window-buttons">
+        <div id="window-button" onclick="sppliceExit()" style="color:white;">&#10006;</div>
+        <div id="draggable">&nbsp</div>
+    </div>
+
 
     <h1 id="spplice-title">Spplice Packages</h1>
     <p id="spplice-clear"><span onclick="launchMod(-1)">clear mods</span></p>
 
     <div id="search">
       <img src="search.png" id="search-icon"><input id="search-input" type="text" placeholder="Search" oninput="updateSearch()">
+      
+    </div>
+
+    <div id="search">
+        <img src="folder.svg" id="dir-icon"><p><span onclick="dirUpdate()" class="dir-open">open</span></p>
+        <input id="dir-input" type="text" placeholder="Game directory">
     </div>
 
     <div id="merge-container" class="merge-unchecked">
@@ -36,8 +48,8 @@
 
     <div id="spplice2-popup">
       <div id="spplice2-popup-close" onclick="spplice2PopupClose()">&#10006;</div>
-      <h2><span class="gradient-text">Spplice 2</span> has been released!</h2>
-      <p>Go to <a onclick="Neutralino.os.open('https://p2r3.com/spplice')" style="cursor: pointer;">p2r3.com/spplice</a> to download the new and improved fancier version of Spplice!</p>
+      <h2>Modified by <span class="gradient-text">Cube Guy</span></h2>
+      <p>Discord: <span class="gradient-text">@cube427</span></p>
     </div>
 
     <script src="js/neutralino.js"></script>
