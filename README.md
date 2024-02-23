@@ -2,7 +2,7 @@
 The Simple Portal 2 Package Loading Instrument for Convenient External modding, or Spplice for short, aims to be a solution to intuitive and user-friendly Portal 2 modding. Spplice makes it easy for players to hop in and play, and lets developers focus less on distribution, and more on making their games fun.
 
 ### Custom directories and direct launch
-This version of Spplice implements the use of custom Portal 2 installations. It'll use the game's installation directory directly instead of using Steam to launch the game.
+This fork implements the use of custom Portal 2 installations. It'll use the game's installation directory directly instead of using Steam to launch the game.
 
 ### Built on NeutralinoJS
 To keep things lightweight, this project uses [NeutralinoJS](https://neutralino.js.org) for the web-based UI and for the API that manages Steam, Portal 2 and all of the packages. In short, Neutralino is similar to Electron. But instead of bundling a whole browser, it relies on what's already present on the user's system.
